@@ -1,11 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Hello wasm-pack!</title>
-  </head>
-  <body>
-    <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
-    <script src="./bootstrap.js"></script>
-  </body>
+    <head>
+        <meta charset="utf-8" />
+        <title>Number Game</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <noscript
+            >This page contains webassembly and javascript content, please
+            enable javascript in your browser.</noscript
+        >
+        <main>
+            <header>
+                <h1>20 Number Game</h1>
+            </header>
+            <section id="game">
+                <ol id="slots">
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                    <li><button class="slot" /></li>
+                </ol>
+                <div>
+                    <article id="rules">
+                        <h2>Rules</h2>
+                        <p>Place 20 random numbers in sequence.</p>
+                        <p>
+                            Win by filling all positions; lose if a number can’t
+                            fit in order.​
+                        </p>
+                    </article>
+                    <button id="start-button">Start</button>
+                    <summary id="game-summary" style="display: none">
+                        <output id="next"></output>
+                        <label id="progress-label" for="progress-bar"></label>
+                        <progress id="progress-bar" max="20"></progress>
+                    </summary>
+                    <details id="stats">
+                        <summary>Statistics</summary>
+                    </details>
+                </div>
+            </section>
+            <footer>
+                <span>&copy; 2024</span>
+                <span>Dante Barbieri</span>
+            </footer>
+        </main>
+        <script src="./bootstrap.js"></script>
+    </body>
 </html>
