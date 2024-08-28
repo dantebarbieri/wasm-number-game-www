@@ -32,4 +32,4 @@ function endGame() {
 // Attach click event to the start button
 startButton.addEventListener("click", startGame);
 
-// wasm.greet();
+wasm.greet();
