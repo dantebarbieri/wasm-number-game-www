@@ -2,7 +2,19 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <link rel="icon" type="image/svg+xml" href="/number-list-default.svg" />
+        <link
+            rel="icon alternate"
+            type="image/svg+xml"
+            href="/number-list-dark.svg"
+            media="(prefers-color-scheme: dark)"
+        />
+        <link
+            rel="icon alternate"
+            type="image/svg+xml"
+            href="/number-list-light.svg"
+            media="(prefers-color-scheme: light)"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Number Game</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,28 +36,28 @@
             </header>
             <section id="game">
                 <ol id="slots">
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
-                    <li><button class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
+                    <li><button disabled class="slot" /></li>
                 </ol>
-                <div>
+                <div id="right-panel">
                     <article id="rules">
                         <h2>Rules</h2>
                         <p>Place 20 random numbers in sequence.</p>
@@ -54,14 +66,26 @@
                             fit in order.​
                         </p>
                     </article>
-                    <button id="start-button">Start</button>
-                    <summary id="game-summary" style="display: none">
-                        <output id="next"></output>
-                        <label id="progress-label" for="progress-bar"></label>
-                        <progress id="progress-bar" max="20"></progress>
-                    </summary>
+                    <div id="controls">
+                        <button id="start-button">Start</button>
+                        <summary id="game-summary">
+                            <output id="next"></output>
+                            <label
+                                id="progress-label"
+                                for="progress-bar"
+                            ></label>
+                            <progress id="progress-bar" max="20"></progress>
+                        </summary>
+                    </div>
                     <details id="stats">
                         <summary>Statistics</summary>
+                        <ul>
+                            <li>Wins: <span id="wins"></span></li>
+                            <li>Games: <span id="games"></span></li>
+                            <li>Average: <span id="mean"></span></li>
+                            <li>Best: <span id="best"></span></li>
+                            <li>Worst: <span id="worst"></span></li>
+                        </ul>
                     </details>
                 </div>
             </section>
