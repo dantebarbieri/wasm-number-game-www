@@ -1,23 +1,50 @@
 import * as wasm from "wasm-number-game";
 
+const SLOTS = 20;
+const LOW = 1;
+const HIGH = 1000;
+
 const startButton = document.getElementById("start-button");
 const nextOutput = document.getElementById("next");
 const gameSummary = document.getElementById("game-summary");
 const progressLabel = document.getElementById("progress-label");
 const progressBar = document.getElementById("progress-bar");
-const slots = document.getElementsByClassName("slot");
+const slots = Array.from(document.getElementsByClassName("slot"));
+
+let game;
+
+function updateGame() {
+  nextOutput.innerText = game.next();
+
+  for (let i = 0; i < slots.length; ++i) {
+    const s = game.slot(i);
+
+    slots[i].disabled = !s.enabled;
+    slots[i].innerText = s.render();
+  }
+
+  const numFilled = game.num_filled();
+  progressLabel.innerText = `${numFilled}/${SLOTS}`;
+  progressBar.innerText = progressLabel.innerText;
+  progressBar.value = numFilled;
+
+  const numAvailable = game.num_available();
+  if (numAvailable == 0) {
+    endGame();
+  }
+}
 
 function startGame() {
   startButton.style.display = "none";
-
   gameSummary.style.display = "flex";
 
-  getNextRandom();
+  game = wasm.Game.new(SLOTS, LOW, HIGH);
 
   for (const slot of slots) {
-    slot.disabled = false;
     slot.addEventListener("click", step);
   }
+
+  updateGame();
 }
 
 function endGame() {
@@ -25,61 +52,9 @@ function endGame() {
 }
 
 function step(e) {
-  e.target.disabled = true;
-  e.target.innerText = nextOutput.innerText;
-  getNextRandom();
-  let s = slots.length;
-  for (; s > 0; --s) {
-    if (
-      slots[s - 1].innerText &&
-      +slots[s - 1].innerText < +nextOutput.innerText
-    ) {
-      break;
-    }
-  }
-
-  let t = 0;
-  if (!(slots[0].innerText && slots[0].innerText > nextOutput.innerText)) {
-    for (; t + 1 < slots.length; ++t) {
-      if (
-        slots[t + 1].innerText &&
-        +slots[t + 1].innerText > +nextOutput.innerText
-      ) {
-        break;
-      }
-    }
-  }
-
-  let any = false;
-  for (let i = 0; i < slots.length; ++i) {
-    slots[i].disabled = !(s <= i && i <= t);
-    any ||= !slots[i].disabled;
-  }
-
-  if (!any) {
-    endGame();
-  }
+  const idx = slots.indexOf(e.target);
+  game.step(idx);
+  updateGame();
 }
 
-function getNextRandom() {
-  nextOutput.innerText = wasm.next(1, 1000);
-
-  progressLabel.innerText = `${getNumberFilledSlots()}/${slots.length}`;
-  progressBar.innerText = progressLabel.innerText;
-  progressBar.value = getNumberFilledSlots();
-}
-
-function getNumberFilledSlots() {
-  let acc = 0;
-
-  for (const slot of slots) {
-    if (slot.innerText) {
-      acc++;
-    }
-  }
-
-  return acc;
-}
-
-// Attach click event to the start button
 startButton.addEventListener("click", startGame);
