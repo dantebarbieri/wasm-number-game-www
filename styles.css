@@ -145,13 +145,17 @@ ol > li::before {
 }
 
 #stats {
-    width: 100%;
+    min-width: 67%;
 }
 
 #stats summary {
     font-weight: bold;
     font-size: 1.2em;
     cursor: pointer;
+}
+
+#reset-button {
+    margin: 1em 0;
 }
 
 .stats-container {

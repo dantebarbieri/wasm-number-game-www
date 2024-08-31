@@ -14,6 +14,9 @@ const INITIAL_STATS: GameStats = {
 const startButton = document.getElementById(
   "start-button",
 ) as HTMLButtonElement;
+const resetButton = document.getElementById(
+  "reset-button",
+) as HTMLButtonElement;
 const nextOutput = document.getElementById("next") as HTMLOutputElement;
 const gameSummary = document.getElementById("game-summary") as HTMLDivElement;
 const progressLabel = document.getElementById(
@@ -48,11 +51,26 @@ function initializeGameStats() {
   updateStatsUI();
 }
 
+function resetGameStats() {
+  if (
+    confirm("Are you sure you want to reset your stats? You cannot undo this.")
+  ) {
+    gameStats = INITIAL_STATS;
+    localStorage.setItem("gameStats", JSON.stringify(gameStats));
+    updateStatsUI();
+  }
+}
+
 function updateGameStats(numFilled: number) {
-  gameStats.totalGames += 1;
-  gameStats.totalFilled += numFilled;
-  gameStats.minFilled = Math.min(gameStats.minFilled ?? SLOTS, numFilled);
+  ++gameStats.totalFilled;
   gameStats.maxFilled = Math.max(gameStats.maxFilled ?? 0, numFilled);
+
+  updateStatsUI();
+}
+
+function updateEndGameStats(numFilled: number) {
+  gameStats.totalGames += 1;
+  gameStats.minFilled = Math.min(gameStats.minFilled ?? SLOTS, numFilled);
   if (numFilled === SLOTS) {
     gameStats.totalWins += 1;
   }
@@ -63,7 +81,9 @@ function updateGameStats(numFilled: number) {
 
 function updateStatsUI() {
   const avgFilled =
-    gameStats.totalGames > 0 ? gameStats.totalFilled / gameStats.totalGames : 0;
+    gameStats.totalGames > 0
+      ? gameStats.totalFilled / gameStats.totalGames
+      : gameStats.totalFilled;
 
   totalGames.textContent = gameStats.totalGames.toString();
   totalWins.textContent = gameStats.totalWins.toString();
@@ -108,7 +128,7 @@ function startGame(): void {
 
 function endGame(): void {
   startButton.style.display = "block";
-  updateGameStats(game.num_filled());
+  updateEndGameStats(game.num_filled());
 }
 
 function step(e: Event): void {
@@ -116,9 +136,12 @@ function step(e: Event): void {
   const idx = slots.indexOf(target);
   game.step(idx);
   updateGame();
+  updateGameStats(game.num_filled());
 }
 
 startButton.addEventListener("click", startGame);
+
+resetButton.addEventListener("click", resetGameStats);
 
 slots.forEach((slot) => {
   slot.disabled = true;
