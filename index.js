@@ -58,3 +58,8 @@ function step(e) {
 }
 
 startButton.addEventListener("click", startGame);
+
+slots.forEach((slot) => {
+  slot.disabled = true;
+  slot.innerText = "";
+});
