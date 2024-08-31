@@ -114,10 +114,6 @@ main {
     font-weight: 600;
 }
 
-#stats > summary {
-    cursor: pointer;
-}
-
 ol {
     display: flex;
     flex-direction: column;
@@ -148,6 +144,45 @@ ol > li::before {
     width: 2em; /* Adjust width to match your design */
 }
 
+#stats {
+    width: 100%;
+}
+
+#stats summary {
+    font-weight: bold;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.stats-container {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #1a1a1a;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    font-weight: 600;
+    color: #ccc;
+}
+
+.stat-value {
+    font-weight: 400;
+    color: #aaa;
+}
+
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
@@ -161,5 +196,18 @@ ol > li::before {
     }
     button:disabled {
         background-color: #f9f9f9;
+    }
+    .stats-container {
+        border-color: #222;
+        background-color: #f9f9f9;
+    }
+    .stat-item {
+        border-color: #111;
+    }
+    .stat-label {
+        color: #333;
+    }
+    .stat-value {
+        color: #555;
     }
 }
