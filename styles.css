@@ -160,9 +160,9 @@ ol > li::before {
         color: #747bff;
     }
     button {
-        background-color: #f9f9f9;
+        background-color: #e8e8e8;
     }
     button:disabled {
-        background-color: #e8e8e8;
+        background-color: #f9f9f9;
     }
 }
