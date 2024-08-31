@@ -7,11 +7,11 @@ const HIGH = 1000;
 const startButton = document.getElementById(
   "start-button",
 ) as HTMLButtonElement;
-const nextOutput = document.getElementById("next") as HTMLSpanElement;
+const nextOutput = document.getElementById("next") as HTMLOutputElement;
 const gameSummary = document.getElementById("game-summary") as HTMLDivElement;
 const progressLabel = document.getElementById(
   "progress-label",
-) as HTMLSpanElement;
+) as HTMLLabelElement;
 const progressBar = document.getElementById(
   "progress-bar",
 ) as HTMLProgressElement;

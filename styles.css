@@ -93,23 +93,20 @@ main {
     display: flex;
     flex-direction: column;
     gap: 3em;
-    align-items: flex-start;
-    justify-content: flex-start;
+    place-items: flex-start;
 }
 
 #game-summary {
     display: none;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    place-items: center;
 }
 
 #controls {
     display: flex;
     flex-direction: column;
     gap: inherit;
-    align-items: center;
-    justify-content: center;
+    place-items: center;
 }
 
 #next {
