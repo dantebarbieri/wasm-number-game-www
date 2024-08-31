@@ -4,17 +4,25 @@ const SLOTS = 20;
 const LOW = 1;
 const HIGH = 1000;
 
-const startButton = document.getElementById("start-button");
-const nextOutput = document.getElementById("next");
-const gameSummary = document.getElementById("game-summary");
-const progressLabel = document.getElementById("progress-label");
-const progressBar = document.getElementById("progress-bar");
-const slots = Array.from(document.getElementsByClassName("slot"));
+const startButton = document.getElementById(
+  "start-button",
+) as HTMLButtonElement;
+const nextOutput = document.getElementById("next") as HTMLSpanElement;
+const gameSummary = document.getElementById("game-summary") as HTMLDivElement;
+const progressLabel = document.getElementById(
+  "progress-label",
+) as HTMLSpanElement;
+const progressBar = document.getElementById(
+  "progress-bar",
+) as HTMLProgressElement;
+const slots = Array.from(
+  document.getElementsByClassName("slot"),
+) as HTMLButtonElement[];
 
-let game;
+let game: wasm.Game;
 
-function updateGame() {
-  nextOutput.innerText = game.next();
+function updateGame(): void {
+  nextOutput.innerText = game.next()?.toString() ?? "";
 
   for (let i = 0; i < slots.length; ++i) {
     const s = game.slot(i);
@@ -29,12 +37,12 @@ function updateGame() {
   progressBar.value = numFilled;
 
   const numAvailable = game.num_available();
-  if (numAvailable == 0) {
+  if (numAvailable === 0) {
     endGame();
   }
 }
 
-function startGame() {
+function startGame(): void {
   startButton.style.display = "none";
   gameSummary.style.display = "flex";
 
@@ -47,12 +55,13 @@ function startGame() {
   updateGame();
 }
 
-function endGame() {
+function endGame(): void {
   startButton.style.display = "block";
 }
 
-function step(e) {
-  const idx = slots.indexOf(e.target);
+function step(e: Event): void {
+  const target = e.target as HTMLButtonElement;
+  const idx = slots.indexOf(target);
   game.step(idx);
   updateGame();
 }

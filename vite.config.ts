@@ -8,7 +8,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     rollupOptions: {
-      input: resolve(__dirname, "bootstrap.js"),
+      input: resolve(__dirname, "src/bootstrap.ts"),
       output: {
         entryFileNames: "bootstrap.js",
       },
