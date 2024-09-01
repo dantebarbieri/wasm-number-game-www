@@ -6,6 +6,7 @@ const HIGH = 1000;
 const INITIAL_STATS: GameStats = {
   totalGames: 0,
   totalFilled: 0,
+  totalHints: 0,
   totalWins: 0,
   currentFilled: 0,
   minFilled: null,
@@ -15,11 +16,18 @@ const INITIAL_STATS: GameStats = {
 const startButton = document.getElementById(
   "start-button",
 ) as HTMLButtonElement;
+const hint = document.getElementById("hint") as HTMLSpanElement;
+const hintButton = document.getElementById("hint-button") as HTMLButtonElement;
+const autoplayCheckbox = document.getElementById(
+  "autoplay",
+) as HTMLInputElement;
 const resetButton = document.getElementById(
   "reset-button",
 ) as HTMLButtonElement;
 const nextOutput = document.getElementById("next") as HTMLOutputElement;
-const gameSummary = document.getElementById("game-summary") as HTMLDivElement;
+const gameSummary = document.getElementById(
+  "game-summary-container",
+) as HTMLDivElement;
 const progressLabel = document.getElementById(
   "progress-label",
 ) as HTMLLabelElement;
@@ -30,6 +38,7 @@ const slots = Array.from(
   document.getElementsByClassName("slot"),
 ) as HTMLButtonElement[];
 const totalGames = document.getElementById("games") as HTMLSpanElement;
+const totalHints = document.getElementById("hints") as HTMLSpanElement;
 const totalWins = document.getElementById("wins") as HTMLSpanElement;
 const averageFilled = document.getElementById("mean") as HTMLSpanElement;
 const minFilled = document.getElementById("worst") as HTMLSpanElement;
@@ -37,11 +46,13 @@ const maxFilled = document.getElementById("best") as HTMLSpanElement;
 
 let game: wasm.Game;
 let gameStats: GameStats;
+let animationId: number | null = null;
 
 interface GameStats {
   totalGames: number;
   totalWins: number;
   totalFilled: number;
+  totalHints: number;
   currentFilled: number;
   minFilled: number | null;
   maxFilled: number | null;
@@ -90,6 +101,7 @@ function updateStatsUI() {
       : gameStats.totalFilled;
 
   totalGames.textContent = gameStats.totalGames.toString();
+  totalHints.textContent = gameStats.totalHints.toString();
   totalWins.textContent = gameStats.totalWins.toString();
   averageFilled.textContent = avgFilled.toFixed(2);
   minFilled.textContent = gameStats.minFilled?.toString() ?? null;
@@ -98,11 +110,13 @@ function updateStatsUI() {
 
 function updateGame(): void {
   nextOutput.textContent = game.next()?.toString() ?? null;
+  hintButton.style.display = "initial";
+  hint.textContent = null;
 
   for (let i = 0; i < slots.length; ++i) {
     const s = game.slot(i);
 
-    slots[i].disabled = !s.enabled;
+    slots[i].disabled = animationId !== null || !s.enabled;
     slots[i].textContent = s.render();
   }
 
@@ -130,6 +144,18 @@ function startGame(): void {
   updateGame();
 }
 
+function getHint(): void {
+  hintButton.style.display = "none";
+  let hintIdx = game.hint();
+  if (hintIdx !== undefined) {
+    ++gameStats.totalHints;
+    hint.textContent = (hintIdx + 1).toString();
+    updateStatsUI();
+  } else {
+    hint.textContent = "No Moves";
+  }
+}
+
 function endGame(): void {
   startButton.style.display = "block";
   updateEndGameStats(game.num_filled());
@@ -143,7 +169,46 @@ function step(e: Event): void {
   updateGameStats(game.num_filled());
 }
 
+function renderLoop(): void {
+  if (game) {
+    updateGame();
+    updateGameStats(game.num_filled());
+
+    // Restart if Ended
+    const numAvailable = game.num_available();
+    if (numAvailable === 0) {
+      startGame();
+    }
+
+    game.tick();
+
+    ++gameStats.totalHints;
+  }
+
+  animationId = requestAnimationFrame(renderLoop);
+}
+
+function toggleAutoplay(e: Event) {
+  const target = e.target as HTMLInputElement;
+
+  hintButton.disabled = target.checked;
+  if (target.checked) {
+    renderLoop();
+  } else {
+    updateGame();
+    updateGameStats(game.num_filled());
+    if (animationId !== null) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+  }
+}
+
 startButton.addEventListener("click", startGame);
+
+autoplayCheckbox.addEventListener("click", toggleAutoplay);
+
+hintButton.addEventListener("click", getHint);
 
 resetButton.addEventListener("click", resetGameStats);
 

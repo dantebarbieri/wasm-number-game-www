@@ -68,13 +68,23 @@
                     </article>
                     <div id="controls">
                         <button id="start-button">Start</button>
-                        <div id="game-summary">
-                            <output id="next"></output>
-                            <label
-                                id="progress-label"
-                                for="progress-bar"
-                            ></label>
-                            <progress id="progress-bar" max="20"></progress>
+                        <div id="game-summary-container">
+                            <div id="game-summary">
+                                <output id="next"></output>
+                                <label
+                                    id="progress-label"
+                                    for="progress-bar"
+                                ></label>
+                                <progress id="progress-bar" max="20"></progress>
+                            </div>
+                            <div id="hint-container">
+                                <span id="hint"></span>
+                                <button id="hint-button">Hint</button>
+                            </div>
+                        </div>
+                        <div id="autoplay-container">
+                            <label for="autoplay">Auto-play</label>
+                            <input type="checkbox" id="autoplay" />
                         </div>
                     </div>
                     <details id="stats">
@@ -88,6 +98,10 @@
                             <div class="stat-item">
                                 <span class="stat-label">Games:</span>
                                 <span id="games" class="stat-value"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Hints:</span>
+                                <span id="hints" class="stat-value"></span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-label">Average:</span>

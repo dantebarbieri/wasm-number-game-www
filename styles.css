@@ -96,8 +96,15 @@ main {
     place-items: flex-start;
 }
 
-#game-summary {
+#game-summary-container {
     display: none;
+    flex-direction: column;
+    place-items: center;
+    gap: 1em;
+}
+
+#game-summary {
+    display: flex;
     flex-direction: column;
     place-items: center;
 }
