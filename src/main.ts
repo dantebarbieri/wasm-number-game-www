@@ -7,6 +7,7 @@ const INITIAL_STATS: GameStats = {
   totalGames: 0,
   totalFilled: 0,
   totalWins: 0,
+  currentFilled: 0,
   minFilled: null,
   maxFilled: null,
 };
@@ -41,6 +42,7 @@ interface GameStats {
   totalGames: number;
   totalWins: number;
   totalFilled: number;
+  currentFilled: number;
   minFilled: number | null;
   maxFilled: number | null;
 }
@@ -62,13 +64,15 @@ function resetGameStats() {
 }
 
 function updateGameStats(numFilled: number) {
-  ++gameStats.totalFilled;
+  gameStats.currentFilled = numFilled;
   gameStats.maxFilled = Math.max(gameStats.maxFilled ?? 0, numFilled);
 
   updateStatsUI();
 }
 
 function updateEndGameStats(numFilled: number) {
+  updateGameStats(numFilled);
+  gameStats.totalFilled += gameStats.currentFilled;
   gameStats.totalGames += 1;
   gameStats.minFilled = Math.min(gameStats.minFilled ?? SLOTS, numFilled);
   if (numFilled === SLOTS) {
